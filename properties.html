@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RWA.Capital - Properties</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: #f8f9fa;
+            color: #202124;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        .header {
+            background: white;
+            border-bottom: 1px solid #e8eaed;
+            padding: 16px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: #202124;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .logo-text h1 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #202124;
+        }
+        
+        .logo-text p {
+            font-size: 12px;
+            color: #5f6368;
+        }
+        
+        .regulatory-badge {
+            background: #f1f3f4;
+            border: 1px solid #dadce0;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: #5f6368;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .user-details {
+            text-align: right;
+        }
+        
+        .user-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #202124;
+        }
+        
+        .user-status {
+            font-size: 12px;
+            color: #5f6368;
+        }
+        
+        /* Main Layout */
+        .main-layout {
+            display: flex;
+            min-height: calc(100vh - 80px);
+        }
+        
+        .sidebar {
+            width: 256px;
+            background: white;
+            border-right: 1px solid #e8eaed;
+            padding: 24px 0;
+        }
+        
+        .sidebar-content {
+            padding: 0 16px;
+        }
+        
+        .verification-status {
+            background: #f8f9fa;
+            border: 1px solid #e8eaed;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .verification-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #202124;
+            margin-bottom: 12px;
+        }
+        
+        .verification-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: #5f6368;
+            margin-bottom: 8px;
+        }
+        
+        .nav-menu {
+            list-style: none;
+        }
+        
+        .nav-item {
+            margin-bottom: 4px;
+        }
+        
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            text-decoration: none;
+            color: #5f6368;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+        
+        .nav-link:hover,
+        .nav-link.active {
+            background: #f1f3f4;
+            color: #202124;
+        }
+        
+        .nav-link.active {
+            font-weight: 600;
+        }
+        
+        .nav-icon {
+            width: 20px;
+            height: 20px;
+        }
+        
+        .content {
+            flex: 1;
+            padding: 24px;
+        }
+        
+        /* Risk Banner */
+        .risk-banner {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .risk-banner-content {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        
+        .risk-icon {
+            width: 20px;
+            height: 20px;
+            color: #dc2626;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        
+        .risk-text {
+            color: #991b1b;
+            font-size: 14px;
+        }
+        
+        .risk-text strong {
+            font-weight: 600;
+        }
+        
+        /* Page Header */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+        
+        .page-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #202124;
+            margin-bottom: 8px;
+        }
+        
+        .page-subtitle {
+            color: #5f6368;
+        }
+        
+        .properties-count {
+            background: #f1f3f4;
+            border: 1px solid #dadce0;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            color: #5f6368;
+        }
+        
+        /* Properties Grid */
+        .properties-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+        
+        .property-card {
+            background: white;
+            border: 1px solid #e8eaed;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.2s;
+        }
+        
+        .property-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .property-image {
+            height: 200px;
+            background: #f1f3f4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #5f6368;
+            font-size: 14px;
+        }
+        
+        .property-content {
+            padding: 24px;
+        }
+        
+        .property-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+        
+        .property-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #202124;
+            margin-bottom: 8px;
+        }
+        
+        .property-location {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #5f6368;
+            font-size: 14px;
+        }
+        
+        .property-status {
+            background: #202124;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .property-details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+        }
+        
+        .detail-label {
+            color: #5f6368;
+        }
+        
+        .detail-value {
+            font-weight: 600;
+            color: #202124;
+        }
+        
+        .property-price {
+            border-top: 1px solid #e8eaed;
+            padding-top: 16px;
+            margin-bottom: 16px;
+        }
+        
+        .price-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #202124;
+            margin-bottom: 4px;
+        }
+        
+        .price-label {
+            font-size: 14px;
+            color: #5f6368;
+        }
+        
+        .funding-progress {
+            margin-bottom: 16px;
+        }
+        
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .progress-label {
+            font-size: 14px;
+            color: #202124;
+        }
+        
+        .progress-percentage {
+            font-size: 14px;
+            font-weight: 600;
+            color: #202124;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e8eaed;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: #202124;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+        
+        .progress-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+        
+        .progress-stat {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #5f6368;
+        }
+        
+        .returns-section {
+            border-top: 1px solid #e8eaed;
+            padding-top: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .returns-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .returns-label {
+            font-size: 14px;
+            color: #5f6368;
+        }
+        
+        .returns-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: #202124;
+        }
+        
+        .returns-detail {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #5f6368;
+        }
+        
+        .invest-button {
+            width: 100%;
+            background: #202124;
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .invest-button:hover {
+            background: #3c4043;
+        }
+        
+        /* Summary Card */
+        .summary-card {
+            background: white;
+            border: 1px solid #e8eaed;
+            border-radius: 8px;
+            padding: 32px;
+            text-align: center;
+        }
+        
+        .summary-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #202124;
+            margin-bottom: 8px;
+        }
+        
+        .summary-description {
+            color: #5f6368;
+            margin-bottom: 24px;
+        }
+        
+        .summary-actions {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+        }
+        
+        .summary-button {
+            padding: 12px 24px;
+            border: 1px solid #dadce0;
+            background: white;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #202124;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .summary-button:hover {
+            background: #f8f9fa;
+        }
+        
+        .summary-button.primary {
+            background: #202124;
+            color: white;
+            border-color: #202124;
+        }
+        
+        .summary-button.primary:hover {
+            background: #3c4043;
+        }
+        
+        /* Footer */
+        .footer {
+            background: #f8f9fa;
+            border-top: 1px solid #e8eaed;
+            padding: 32px 0;
+            margin-top: 48px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+        
+        .footer-section h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #202124;
+            margin-bottom: 16px;
+        }
+        
+        .footer-section p,
+        .footer-section a {
+            font-size: 14px;
+            color: #5f6368;
+            text-decoration: none;
+            margin-bottom: 8px;
+            display: block;
+        }
+        
+        .footer-section a:hover {
+            color: #202124;
+        }
+        
+        .footer-bottom {
+            border-top: 1px solid #e8eaed;
+            padding-top: 24px;
+            margin-top: 24px;
+            text-align: center;
+            font-size: 14px;
+            color: #5f6368;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-layout {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #e8eaed;
+            }
+            
+            .properties-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .property-details {
+                grid-template-columns: 1fr;
+            }
+            
+            .progress-stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .summary-actions {
+                flex-direction: column;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">RWA</div>
+                    <div class="logo-text">
+                        <h1>RWA.Capital</h1>
+                        <p>Real Estate Investment Platform</p>
+                    </div>
+                </div>
+                
+                <div class="regulatory-badge">
+                    DFSA Regulated
+                </div>
+                
+                <div class="user-info">
+                    <div class="user-details">
+                        <div class="user-name">Ahmed Al-Rashid</div>
+                        <div class="user-status">Verified Investor</div>
+                    </div>
+                    <div class="user-avatar">👤</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Layout -->
+    <div class="main-layout">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="sidebar-content">
+                <!-- Verification Status -->
+                <div class="verification-status">
+                    <div class="verification-title">
+                        🛡️ Account Status
+                    </div>
+                    <div class="verification-item">
+                        <span>Email Verified</span>
+                        <span>✅</span>
+                    </div>
+                    <div class="verification-item">
+                        <span>KYC Complete</span>
+                        <span>✅</span>
+                    </div>
+                    <div class="verification-item">
+                        <span>Funding Ready</span>
+                        <span>✅</span>
+                    </div>
+                </div>
+
+                <!-- Navigation -->
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="index.html" class="nav-link">
+                            <span class="nav-icon">🏠</span>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="properties.html" class="nav-link active">
+                            <span class="nav-icon">🏢</span>
+                            Properties
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <span class="nav-icon">📈</span>
+                            Portfolio
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <span class="nav-icon">📄</span>
+                            Documents
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <span class="nav-icon">⚙️</span>
+                            Settings
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="content">
+            <!-- Risk Disclosure Banner -->
+            <div class="risk-banner">
+                <div class="risk-banner-content">
+                    <div class="risk-icon">⚠️</div>
+                    <div class="risk-text">
+                        <strong>Risk Warning:</strong> Property investments carry risk. Your capital is at risk and you may not receive anticipated returns. 
+                        Past performance is not indicative of future results. This is not investment advice. 
+                        <a href="#" style="color: #dc2626; text-decoration: underline;">Read full risk disclosure</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Page Header -->
+            <div class="page-header">
+                <div>
+                    <h1 class="page-title">Investment Properties</h1>
+                    <p class="page-subtitle">Discover premium real estate investment opportunities</p>
+                </div>
+                <div class="properties-count">
+                    2 Properties Available
+                </div>
+            </div>
+
+            <!-- Properties Grid -->
+            <div class="properties-grid">
+                <!-- Property 1: Marina Pearl Tower -->
+                <div class="property-card">
+                    <div class="property-image">
+                        <div style="text-align: center;">
+                            <div style="font-size: 48px; margin-bottom: 8px;">🏢</div>
+                            <div>Property Image</div>
+                            <div style="font-size: 12px; color: #9aa0a6;">2 photos available</div>
+                        </div>
+                    </div>
+                    
+                    <div class="property-content">
+                        <div class="property-header">
+                            <div>
+                                <h3 class="property-title">Marina Pearl Tower - 2BR Premium Apartment</h3>
+                                <div class="property-location">
+                                    <span>📍</span>
+                                    <span>Dubai Marina, Dubai</span>
+                                </div>
+                            </div>
+                            <div class="property-status">LIVE</div>
+                        </div>
+
+                        <div class="property-details">
+                            <div class="detail-item">
+                                <span>🏠</span>
+                                <span class="detail-label">Type:</span>
+                                <span class="detail-value">Apartment</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Area:</span>
+                                <span class="detail-value">1,250 sqft</span>
+                            </div>
+                            <div class="detail-item">
+                                <span>🛏️</span>
+                                <span class="detail-label">Bedrooms:</span>
+                                <span class="detail-value">2</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Price/sqft:</span>
+                                <span class="detail-value">AED 1,480</span>
+                            </div>
+                        </div>
+
+                        <div class="property-price">
+                            <div class="price-value">AED 1,850,000</div>
+                            <div class="price-label">Total Property Value</div>
+                        </div>
+
+                        <div class="funding-progress">
+                            <div class="progress-header">
+                                <span class="progress-label">Funding Progress</span>
+                                <span class="progress-percentage">57.5%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 57.5%;"></div>
+                            </div>
+                            <div class="progress-stats">
+                                <div class="progress-stat">
+                                    <span>👥</span>
+                                    <span>186 investors</span>
+                                </div>
+                                <div class="progress-stat">
+                                    <span>🕒</span>
+                                    <span>23 days left</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="returns-section">
+                            <div class="returns-header">
+                                <span class="returns-label">Expected Annual Return</span>
+                                <span class="returns-value">5.8%</span>
+                            </div>
+                            <div class="returns-detail">
+                                <span>📈</span>
+                                <span>+6.5% appreciation</span>
+                            </div>
+                        </div>
+
+                        <button class="invest-button" onclick="alert('Investment interface would open here')">
+                            View Investment Details
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Property 2: Downtown Villa -->
+                <div class="property-card">
+                    <div class="property-image">
+                        <div style="text-align: center;">
+                            <div style="font-size: 48px; margin-bottom: 8px;">🏢</div>
+                            <div>Property Image</div>
+                            <div style="font-size: 12px; color: #9aa0a6;">2 photos available</div>
+                        </div>
+                    </div>
+                    
+                    <div class="property-content">
+                        <div class="property-header">
+                            <div>
+                                <h3 class="property-title">Downtown Dubai - 3BR Luxury Villa</h3>
+                                <div class="property-location">
+                                    <span>📍</span>
+                                    <span>Burj Khalifa District, Downtown Dubai</span>
+                                </div>
+                            </div>
+                            <div class="property-status">LIVE</div>
+                        </div>
+
+                        <div class="property-details">
+                            <div class="detail-item">
+                                <span>🏠</span>
+                                <span class="detail-label">Type:</span>
+                                <span class="detail-value">Villa</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Area:</span>
+                                <span class="detail-value">2,800 sqft</span>
+                            </div>
+                            <div class="detail-item">
+                                <span>🛏️</span>
+                                <span class="detail-label">Bedrooms:</span>
+                                <span class="detail-value">3</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Price/sqft:</span>
+                                <span class="detail-value">AED 1,143</span>
+                            </div>
+                        </div>
+
+                        <div class="property-price">
+                            <div class="price-value">AED 3,200,000</div>
+                            <div class="price-label">Total Property Value</div>
+                        </div>
+
+                        <div class="funding-progress">
+                            <div class="progress-header">
+                                <span class="progress-label">Funding Progress</span>
+                                <span class="progress-percentage">60.0%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 60%;"></div>
+                            </div>
+                            <div class="progress-stats">
+                                <div class="progress-stat">
+                                    <span>👥</span>
+                                    <span>95 investors</span>
+                                </div>
+                                <div class="progress-stat">
+                                    <span>🕒</span>
+                                    <span>15 days left</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="returns-section">
+                            <div class="returns-header">
+                                <span class="returns-label">Expected Annual Return</span>
+                                <span class="returns-value">5.2%</span>
+                            </div>
+                            <div class="returns-detail">
+                                <span>📈</span>
+                                <span>+7.0% appreciation</span>
+                            </div>
+                        </div>
+
+                        <button class="invest-button" onclick="alert('Investment interface would open here')">
+                            View Investment Details
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Summary Card -->
+            <div class="summary-card">
+                <h3 class="summary-title">Ready to Invest?</h3>
+                <p class="summary-description">
+                    All properties are thoroughly vetted and regulated by DFSA. 
+                    Start with as little as AED 5,000.
+                </p>
+                <div class="summary-actions">
+                    <button class="summary-button" onclick="alert('Download guide')">
+                        Download Investment Guide
+                    </button>
+                    <button class="summary-button primary" onclick="alert('Schedule consultation')">
+                        Schedule Consultation
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>🛡️ Regulatory Compliance</h3>
+                    <p>Licensed by Dubai Financial Services Authority (DFSA)</p>
+                    <p>License Number: ITL-001234</p>
+                    <p>Authorized for Real Estate Investment Services</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>⚠️ Important Risk Warning</h3>
+                    <p>Property investments carry risk. Your capital is at risk and you may not receive anticipated returns.</p>
+                    <p>Past performance is not indicative of future results.</p>
+                    <p>This is not investment advice.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>📋 Legal Information</h3>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Risk Disclosure</a>
+                    <a href="#">Complaints Procedure</a>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 RWA.Capital. All rights reserved. | Dubai International Financial Centre, United Arab Emirates</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

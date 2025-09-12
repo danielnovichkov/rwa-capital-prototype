@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RWA.Capital - Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: #f8f9fa;
+            color: #202124;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        .header {
+            background: white;
+            border-bottom: 1px solid #e8eaed;
+            padding: 16px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: #202124;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .logo-text h1 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #202124;
+        }
+        
+        .logo-text p {
+            font-size: 12px;
+            color: #5f6368;
+        }
+        
+        .regulatory-badge {
+            background: #f1f3f4;
+            border: 1px solid #dadce0;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: #5f6368;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .user-details {
+            text-align: right;
+        }
+        
+        .user-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #202124;
+        }
+        
+        .user-status {
+            font-size: 12px;
+            color: #5f6368;
+        }
+        
+        /* Main Layout */
+        .main-layout {
+            display: flex;
+            min-height: calc(100vh - 80px);
+        }
+        
+        .sidebar {
+            width: 256px;
+            background: white;
+            border-right: 1px solid #e8eaed;
+            padding: 24px 0;
+        }
+        
+        .sidebar-content {
+            padding: 0 16px;
+        }
+        
+        .verification-status {
+            background: #f8f9fa;
+            border: 1px solid #e8eaed;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .verification-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #202124;
+            margin-bottom: 12px;
+        }
+        
+        .verification-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: #5f6368;
+            margin-bottom: 8px;
+        }
+        
+        .nav-menu {
+            list-style: none;
+        }
+        
+        .nav-item {
+            margin-bottom: 4px;
+        }
+        
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            text-decoration: none;
+            color: #5f6368;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+        
+        .nav-link:hover,
+        .nav-link.active {
+            background: #f1f3f4;
+            color: #202124;
+        }
+        
+        .nav-link.active {
+            font-weight: 600;
+        }
+        
+        .nav-icon {
+            width: 20px;
+            height: 20px;
+        }
+        
+        .content {
+            flex: 1;
+            padding: 24px;
+        }
+        
+        /* Risk Banner */
+        .risk-banner {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .risk-banner-content {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        
+        .risk-icon {
+            width: 20px;
+            height: 20px;
+            color: #dc2626;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        
+        .risk-text {
+            color: #991b1b;
+            font-size: 14px;
+        }
+        
+        .risk-text strong {
+            font-weight: 600;
+        }
+        
+        /* Welcome Widget */
+        .welcome-widget {
+            background: white;
+            border: 1px solid #e8eaed;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+        
+        .welcome-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .welcome-text h2 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #202124;
+            margin-bottom: 8px;
+        }
+        
+        .welcome-text p {
+            color: #5f6368;
+            margin-bottom: 16px;
+        }
+        
+        .welcome-badges {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .badge {
+            background: #f1f3f4;
+            border: 1px solid #dadce0;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            color: #5f6368;
+        }
+        
+        .badge.verified {
+            background: #e8f5e8;
+            border-color: #c3e6c3;
+            color: #2d5a2d;
+        }
+        
+        .portfolio-summary {
+            text-align: right;
+        }
+        
+        .portfolio-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #202124;
+            margin-bottom: 4px;
+        }
+        
+        .portfolio-label {
+            font-size: 14px;
+            color: #5f6368;
+            margin-bottom: 4px;
+        }
+        
+        .portfolio-change {
+            font-size: 14px;
+            color: #5f6368;
+        }
+        
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 24px;
+        }
+        
+        .card {
+            background: white;
+            border: 1px solid #e8eaed;
+            border-radius: 8px;
+            padding: 24px;
+        }
+        
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #202124;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .card-icon {
+            width: 20px;
+            height: 20px;
+        }
+        
+        /* Portfolio Summary */
+        .portfolio-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #202124;
+            margin-bottom: 4px;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            color: #5f6368;
+            margin-bottom: 4px;
+        }
+        
+        .stat-change {
+            font-size: 12px;
+            color: #5f6368;
+        }
+        
+        .stat-change.positive {
+            color: #137333;
+        }
+        
+        /* Asset Allocation */
+        .allocation-chart {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .allocation-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .allocation-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+        }
+        
+        .allocation-label {
+            flex: 1;
+            font-size: 14px;
+            color: #202124;
+        }
+        
+        .allocation-value {
+            font-size: 14px;
+            font-weight: 600;
+            color: #202124;
+        }
+        
+        /* Recent Activity */
+        .activity-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            border: 1px solid #e8eaed;
+            border-radius: 8px;
+        }
+        
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            background: #f1f3f4;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #5f6368;
+        }
+        
+        .activity-content {
+            flex: 1;
+        }
+        
+        .activity-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #202124;
+            margin-bottom: 4px;
+        }
+        
+        .activity-description {
+            font-size: 12px;
+            color: #5f6368;
+            margin-bottom: 8px;
+        }
+        
+        .activity-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .activity-amount {
+            font-size: 14px;
+            font-weight: 600;
+            color: #202124;
+        }
+        
+        .activity-date {
+            font-size: 12px;
+            color: #5f6368;
+        }
+        
+        .activity-status {
+            background: #e8f5e8;
+            border: 1px solid #c3e6c3;
+            color: #2d5a2d;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+        }
+        
+        /* Market Insights */
+        .insights-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        
+        .insight-item {
+            padding: 16px;
+            border: 1px solid #e8eaed;
+            border-radius: 8px;
+        }
+        
+        .insight-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #202124;
+            margin-bottom: 8px;
+        }
+        
+        .insight-description {
+            font-size: 12px;
+            color: #5f6368;
+        }
+        
+        /* Footer */
+        .footer {
+            background: #f8f9fa;
+            border-top: 1px solid #e8eaed;
+            padding: 32px 0;
+            margin-top: 48px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+        
+        .footer-section h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #202124;
+            margin-bottom: 16px;
+        }
+        
+        .footer-section p,
+        .footer-section a {
+            font-size: 14px;
+            color: #5f6368;
+            text-decoration: none;
+            margin-bottom: 8px;
+            display: block;
+        }
+        
+        .footer-section a:hover {
+            color: #202124;
+        }
+        
+        .footer-bottom {
+            border-top: 1px solid #e8eaed;
+            padding-top: 24px;
+            margin-top: 24px;
+            text-align: center;
+            font-size: 14px;
+            color: #5f6368;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-layout {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #e8eaed;
+            }
+            
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .portfolio-stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .welcome-content {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">RWA</div>
+                    <div class="logo-text">
+                        <h1>RWA.Capital</h1>
+                        <p>Real Estate Investment Platform</p>
+                    </div>
+                </div>
+                
+                <div class="regulatory-badge">
+                    DFSA Regulated
+                </div>
+                
+                <div class="user-info">
+                    <div class="user-details">
+                        <div class="user-name">Ahmed Al-Rashid</div>
+                        <div class="user-status">Verified Investor</div>
+                    </div>
+                    <div class="user-avatar">👤</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Layout -->
+    <div class="main-layout">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="sidebar-content">
+                <!-- Verification Status -->
+                <div class="verification-status">
+                    <div class="verification-title">
+                        🛡️ Account Status
+                    </div>
+                    <div class="verification-item">
+                        <span>Email Verified</span>
+                        <span>✅</span>
+                    </div>
+                    <div class="verification-item">
+                        <span>KYC Complete</span>
+                        <span>✅</span>
+                    </div>
+                    <div class="verification-item">
+                        <span>Funding Ready</span>
+                        <span>✅</span>
+                    </div>
+                </div>
+
+                <!-- Navigation -->
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="index.html" class="nav-link active">
+                            <span class="nav-icon">🏠</span>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="properties.html" class="nav-link">
+                            <span class="nav-icon">🏢</span>
+                            Properties
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <span class="nav-icon">📈</span>
+                            Portfolio
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <span class="nav-icon">📄</span>
+                            Documents
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <span class="nav-icon">⚙️</span>
+                            Settings
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="content">
+            <!-- Risk Disclosure Banner -->
+            <div class="risk-banner">
+                <div class="risk-banner-content">
+                    <div class="risk-icon">⚠️</div>
+                    <div class="risk-text">
+                        <strong>Risk Warning:</strong> Property investments carry risk. Your capital is at risk and you may not receive anticipated returns. 
+                        Past performance is not indicative of future results. This is not investment advice. 
+                        <a href="#" style="color: #dc2626; text-decoration: underline;">Read full risk disclosure</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Welcome Widget -->
+            <div class="welcome-widget">
+                <div class="welcome-content">
+                    <div class="welcome-text">
+                        <h2>Welcome back, Ahmed Al-Rashid</h2>
+                        <p>Your investment portfolio is performing well. Here's your latest overview.</p>
+                        <div class="welcome-badges">
+                            <span class="badge verified">✅ Verified Investor</span>
+                            <span class="badge">📈 Portfolio: +9.5%</span>
+                        </div>
+                    </div>
+                    <div class="portfolio-summary">
+                        <div class="portfolio-value">AED 268,400</div>
+                        <div class="portfolio-label">Total Portfolio Value</div>
+                        <div class="portfolio-change">+AED 23,400 (9.5%)</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard Grid -->
+            <div class="dashboard-grid">
+                <!-- Left Column -->
+                <div>
+                    <!-- Portfolio Summary -->
+                    <div class="card">
+                        <h3 class="card-title">
+                            <span class="card-icon">🏠</span>
+                            Portfolio Overview
+                        </h3>
+                        
+                        <div class="portfolio-stats">
+                            <div class="stat-item">
+                                <div class="stat-value">AED 245,000</div>
+                                <div class="stat-label">Total Investment</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">AED 268,400</div>
+                                <div class="stat-label">Current Value</div>
+                                <div class="stat-change positive">+9.5%</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">AED 23,400</div>
+                                <div class="stat-label">Total Return</div>
+                                <div class="stat-change">+9.5% (6 months)</div>
+                            </div>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px;">
+                            <!-- Asset Allocation -->
+                            <div>
+                                <h4 style="font-weight: 600; margin-bottom: 16px;">Asset Allocation</h4>
+                                <div class="allocation-chart">
+                                    <div class="allocation-item">
+                                        <div class="allocation-color" style="background: #374151;"></div>
+                                        <span class="allocation-label">Residential</span>
+                                        <span class="allocation-value">65%</span>
+                                    </div>
+                                    <div class="allocation-item">
+                                        <div class="allocation-color" style="background: #6b7280;"></div>
+                                        <span class="allocation-label">Commercial</span>
+                                        <span class="allocation-value">25%</span>
+                                    </div>
+                                    <div class="allocation-item">
+                                        <div class="allocation-color" style="background: #9ca3af;"></div>
+                                        <span class="allocation-label">Mixed Use</span>
+                                        <span class="allocation-value">10%</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Performance Chart -->
+                            <div>
+                                <h4 style="font-weight: 600; margin-bottom: 16px;">6-Month Performance</h4>
+                                <div style="display: flex; flex-direction: column; gap: 8px;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <span style="font-size: 14px; color: #5f6368;">Jan</span>
+                                        <div style="display: flex; align-items: center; gap: 8px;">
+                                            <div style="width: 80px; height: 8px; background: #e8eaed; border-radius: 4px;">
+                                                <div style="width: 0%; height: 100%; background: #202124; border-radius: 4px;"></div>
+                                            </div>
+                                            <span style="font-size: 14px; font-weight: 600; width: 60px; text-align: right;">AED 0</span>
+                                        </div>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <span style="font-size: 14px; color: #5f6368;">Feb</span>
+                                        <div style="display: flex; align-items: center; gap: 8px;">
+                                            <div style="width: 80px; height: 8px; background: #e8eaed; border-radius: 4px;">
+                                                <div style="width: 18%; height: 100%; background: #202124; border-radius: 4px;"></div>
+                                            </div>
+                                            <span style="font-size: 14px; font-weight: 600; width: 60px; text-align: right;">AED 1,200</span>
+                                        </div>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <span style="font-size: 14px; color: #5f6368;">Mar</span>
+                                        <div style="display: flex; align-items: center; gap: 8px;">
+                                            <div style="width: 80px; height: 8px; background: #e8eaed; border-radius: 4px;">
+                                                <div style="width: 41%; height: 100%; background: #202124; border-radius: 4px;"></div>
+                                            </div>
+                                            <span style="font-size: 14px; font-weight: 600; width: 60px; text-align: right;">AED 2,800</span>
+                                        </div>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <span style="font-size: 14px; color: #5f6368;">Apr</span>
+                                        <div style="display: flex; align-items: center; gap: 8px;">
+                                            <div style="width: 80px; height: 8px; background: #e8eaed; border-radius: 4px;">
+                                                <div style="width: 53%; height: 100%; background: #202124; border-radius: 4px;"></div>
+                                            </div>
+                                            <span style="font-size: 14px; font-weight: 600; width: 60px; text-align: right;">AED 3,600</span>
+                                        </div>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <span style="font-size: 14px; color: #5f6368;">May</span>
+                                        <div style="display: flex; align-items: center; gap: 8px;">
+                                            <div style="width: 80px; height: 8px; background: #e8eaed; border-radius: 4px;">
+                                                <div style="width: 76%; height: 100%; background: #202124; border-radius: 4px;"></div>
+                                            </div>
+                                            <span style="font-size: 14px; font-weight: 600; width: 60px; text-align: right;">AED 5,200</span>
+                                        </div>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <span style="font-size: 14px; color: #5f6368;">Jun</span>
+                                        <div style="display: flex; align-items: center; gap: 8px;">
+                                            <div style="width: 80px; height: 8px; background: #e8eaed; border-radius: 4px;">
+                                                <div style="width: 100%; height: 100%; background: #202124; border-radius: 4px;"></div>
+                                            </div>
+                                            <span style="font-size: 14px; font-weight: 600; width: 60px; text-align: right;">AED 6,800</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Activity -->
+                    <div class="card">
+                        <h3 class="card-title">
+                            <span class="card-icon">🕒</span>
+                            Recent Activity
+                        </h3>
+                        
+                        <div class="activity-list">
+                            <div class="activity-item">
+                                <div class="activity-icon">🏢</div>
+                                <div class="activity-content">
+                                    <div class="activity-title">Investment in Marina Pearl Tower</div>
+                                    <div class="activity-description">Invested AED 50,000 in 2BR Premium Apartment</div>
+                                    <div class="activity-meta">
+                                        <span class="activity-amount">AED 50,000</span>
+                                        <span class="activity-date">2025-01-15</span>
+                                    </div>
+                                </div>
+                                <span class="activity-status">completed</span>
+                            </div>
+                            
+                            <div class="activity-item">
+                                <div class="activity-icon">📈</div>
+                                <div class="activity-content">
+                                    <div class="activity-title">Monthly Rental Income</div>
+                                    <div class="activity-description">Received rental income from Downtown Villa</div>
+                                    <div class="activity-meta">
+                                        <span class="activity-amount">AED 2,400</span>
+                                        <span class="activity-date">2025-01-01</span>
+                                    </div>
+                                </div>
+                                <span class="activity-status">completed</span>
+                            </div>
+                            
+                            <div class="activity-item">
+                                <div class="activity-icon">🏢</div>
+                                <div class="activity-content">
+                                    <div class="activity-title">Investment in Downtown Villa</div>
+                                    <div class="activity-description">Invested AED 100,000 in 3BR Luxury Villa</div>
+                                    <div class="activity-meta">
+                                        <span class="activity-amount">AED 100,000</span>
+                                        <span class="activity-date">2025-02-20</span>
+                                    </div>
+                                </div>
+                                <span class="activity-status">completed</span>
+                            </div>
+                            
+                            <div class="activity-item">
+                                <div class="activity-icon">🕒</div>
+                                <div class="activity-content">
+                                    <div class="activity-title">Property Valuation Update</div>
+                                    <div class="activity-description">Quarterly valuation report for Marina Pearl Tower</div>
+                                    <div class="activity-meta">
+                                        <span class="activity-amount">Pending</span>
+                                        <span class="activity-date">2025-03-15</span>
+                                    </div>
+                                </div>
+                                <span class="activity-status" style="background: #fef3c7; border-color: #fde68a; color: #92400e;">pending</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column -->
+                <div>
+                    <!-- Market Performance -->
+                    <div class="card">
+                        <h3 class="card-title">
+                            <span class="card-icon">🏢</span>
+                            Market Performance
+                        </h3>
+                        
+                        <div style="display: flex; flex-direction: column; gap: 16px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; border: 1px solid #e8eaed; border-radius: 8px;">
+                                <div style="display: flex; align-items: center; gap: 12px;">
+                                    <span style="font-size: 16px;">📍</span>
+                                    <div>
+                                        <div style="font-size: 14px; font-weight: 600; color: #202124;">Dubai Marina</div>
+                                        <div style="font-size: 12px; color: #5f6368;">Residential</div>
+                                    </div>
+                                </div>
+                                <div style="text-align: right;">
+                                    <div style="display: flex; align-items: center; gap: 4px;">
+                                        <span style="font-size: 16px;">📈</span>
+                                        <span style="font-size: 14px; font-weight: 600; color: #202124;">+5.2%</span>
+                                    </div>
+                                    <div style="font-size: 12px; color: #5f6368;">AED 1,480/sqft</div>
+                                </div>
+                            </div>
+                            
+                            <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; border: 1px solid #e8eaed; border-radius: 8px;">
+                                <div style="display: flex; align-items: center; gap: 12px;">
+                                    <span style="font-size: 16px;">📍</span>
+                                    <div>
+                                        <div style="font-size: 14px; font-weight: 600; color: #202124;">Downtown Dubai</div>
+                                        <div style="font-size: 12px; color: #5f6368;">Luxury</div>
+                                    </div>
+                                </div>
+                                <div style="text-align: right;">
+                                    <div style="display: flex; align-items: center; gap: 4px;">
+                                        <span style="font-size: 16px;">📈</span>
+                                        <span style="font-size: 14px; font-weight: 600; color: #202124;">+3.8%</span>
+                                    </div>
+                                    <div style="font-size: 12px; color: #5f6368;">AED 1,143/sqft</div>
+                                </div>
+                            </div>
+                            
+                            <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; border: 1px solid #e8eaed; border-radius: 8px;">
+                                <div style="display: flex; align-items: center; gap: 12px;">
+                                    <span style="font-size: 16px;">📍</span>
+                                    <div>
+                                        <div style="font-size: 14px; font-weight: 600; color: #202124;">Business Bay</div>
+                                        <div style="font-size: 12px; color: #5f6368;">Commercial</div>
+                                    </div>
+                                </div>
+                                <div style="text-align: right;">
+                                    <div style="display: flex; align-items: center; gap: 4px;">
+                                        <span style="font-size: 16px;">📈</span>
+                                        <span style="font-size: 14px; font-weight: 600; color: #202124;">+2.1%</span>
+                                    </div>
+                                    <div style="font-size: 12px; color: #5f6368;">AED 980/sqft</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Market Insights -->
+                    <div class="card">
+                        <h3 class="card-title">Market Insights</h3>
+                        
+                        <div class="insights-list">
+                            <div class="insight-item">
+                                <div class="insight-title">Market Outlook</div>
+                                <div class="insight-description">Dubai real estate market showing strong growth with 4.2% average price increase in Q1 2025.</div>
+                            </div>
+                            
+                            <div class="insight-item">
+                                <div class="insight-title">Investment Opportunities</div>
+                                <div class="insight-description">Premium residential properties in Marina and Downtown areas continue to offer attractive yields.</div>
+                            </div>
+                            
+                            <div class="insight-item">
+                                <div class="insight-title">Regulatory Update</div>
+                                <div class="insight-description">DFSA updates investment guidelines for real estate crowdfunding platforms.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="card">
+                        <h3 class="card-title">Quick Actions</h3>
+                        
+                        <div style="display: flex; flex-direction: column; gap: 12px;">
+                            <button style="width: 100%; padding: 12px; border: 1px solid #dadce0; background: white; border-radius: 6px; text-align: left; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='#f8f9fa'" onmouseout="this.style.background='white'">
+                                View All Properties
+                            </button>
+                            <button style="width: 100%; padding: 12px; border: 1px solid #dadce0; background: white; border-radius: 6px; text-align: left; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='#f8f9fa'" onmouseout="this.style.background='white'">
+                                Download Portfolio Report
+                            </button>
+                            <button style="width: 100%; padding: 12px; border: 1px solid #dadce0; background: white; border-radius: 6px; text-align: left; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='#f8f9fa'" onmouseout="this.style.background='white'">
+                                Schedule Consultation
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>🛡️ Regulatory Compliance</h3>
+                    <p>Licensed by Dubai Financial Services Authority (DFSA)</p>
+                    <p>License Number: ITL-001234</p>
+                    <p>Authorized for Real Estate Investment Services</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>⚠️ Important Risk Warning</h3>
+                    <p>Property investments carry risk. Your capital is at risk and you may not receive anticipated returns.</p>
+                    <p>Past performance is not indicative of future results.</p>
+                    <p>This is not investment advice.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>📋 Legal Information</h3>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Risk Disclosure</a>
+                    <a href="#">Complaints Procedure</a>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 RWA.Capital. All rights reserved. | Dubai International Financial Centre, United Arab Emirates</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
